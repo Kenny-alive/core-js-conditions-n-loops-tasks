@@ -309,8 +309,15 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let result = false;
+  const numStr = String(num);
+  for (let i = 0; i < numStr.length; i += 1) {
+    if (numStr[i] === String(digit)) {
+      result = true;
+    }
+  }
+  return result;
 }
 
 /**
@@ -326,8 +333,21 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let sumOfElements = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    sumOfElements += arr[i];
+  }
+  let left = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    const right = sumOfElements - left - arr[i];
+    if (left === right) {
+      return i;
+    }
+    left += arr[i];
+  }
+  return -1;
 }
 
 /**
@@ -351,8 +371,8 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+
 }
 
 /**
