@@ -372,7 +372,41 @@ function getBalanceIndex(arr) {
  *        ]
  */
 function getSpiralMatrix(size) {
-
+  const spiralMatrix = new Array(size);
+  for (let i = 0; i < size; i += 1) {
+    spiralMatrix[i] = new Array(size);
+    for (let j = 0; j < size; j += 1) {
+      spiralMatrix[i][j] = 0;
+    }
+  }
+  const number = { value: 1 };
+  let left = 0;
+  let right = size - 1;
+  let top = 0;
+  let bottom = size - 1;
+  while (left <= right && top <= bottom) {
+    for (let i = left; i <= right; i += 1) {
+      spiralMatrix[top][i] = number.value;
+      number.value += 1;
+    }
+    top += 1;
+    for (let i = top; i <= bottom; i += 1) {
+      spiralMatrix[i][right] = number.value;
+      number.value += 1;
+    }
+    right -= 1;
+    for (let i = right; i >= left; i -= 1) {
+      spiralMatrix[bottom][i] = number.value;
+      number.value += 1;
+    }
+    bottom -= 1;
+    for (let i = bottom; i >= top; i -= 1) {
+      spiralMatrix[i][left] = number.value;
+      number.value += 1;
+    }
+    left += 1;
+  }
+  return spiralMatrix;
 }
 
 /**
@@ -390,8 +424,27 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(_matrix) {
+  const matrix = _matrix;
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = i + 1; j < matrix[i].length; j += 1) {
+      const item = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = item;
+    }
+  }
+  for (let i = 0; i < matrix.length; i += 1) {
+    let left = 0;
+    let right = matrix[i].length - 1;
+    while (left < right) {
+      const item = matrix[i][left];
+      matrix[i][left] = matrix[i][right];
+      matrix[i][right] = item;
+      left += 1;
+      right -= 1;
+    }
+  }
+  return matrix;
 }
 
 /**
@@ -408,8 +461,40 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(_arr) {
+  const arr = _arr;
+  if (arr.length <= 1) {
+    return arr;
+  }
+  const stack = [];
+  stack[0] = [0, arr.length - 1];
+  let stackIndex = 1;
+  while (stackIndex > 0) {
+    stackIndex -= 1;
+    const [leftPart, rightPart] = stack[stackIndex];
+    if (leftPart < rightPart) {
+      const middlePart = arr[rightPart];
+      let indexLowElement = leftPart - 1;
+      for (let i = leftPart; i < rightPart; i += 1) {
+        if (arr[i] < middlePart) {
+          indexLowElement += 1;
+          const temp = arr[indexLowElement];
+          arr[indexLowElement] = arr[i];
+          arr[i] = temp;
+        }
+      }
+      const temp = arr[indexLowElement + 1];
+      arr[indexLowElement + 1] = arr[rightPart];
+      arr[rightPart] = temp;
+      const mainIndex = indexLowElement + 1;
+      stack[stackIndex] = [leftPart, mainIndex - 1];
+      stackIndex += 1;
+      stack[stackIndex] = [mainIndex + 1, rightPart];
+      stackIndex += 1;
+    }
+  }
+
+  return arr;
 }
 
 /**
